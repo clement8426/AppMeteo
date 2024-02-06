@@ -39,6 +39,18 @@ function callWeatherAPI(city) {
     .then((data) => {
       // Traitez les données de réponse JSON ici
       console.log(data);
+
+      // Mise à jour du contenu de la balise <div> avec les informations sur la météo
+      const weatherInfo = document.getElementById("weather-info");
+      weatherInfo.innerHTML = `
+        <strong>Ville:</strong> ${data.location.name}<br>
+        <strong>Température actuelle:</strong> ${data.current.temp_c}°C<br>
+        <strong>Sensation thermique:</strong> ${data.current.feelslike_c}°C<br>
+        <strong>Direction du vent:</strong> ${data.current.wind_dir}<br>
+        <strong>Vitesse du vent:</strong> ${data.current.wind_kph} km/h<br>
+        <strong>Précipitations:</strong> ${data.current.precip_mm} mm<br>
+        <strong>Jour ou nuit:</strong> ${data.current.is_day ? "Jour" : "Nuit"}
+      `;
     })
     .catch((error) => {
       console.error(
