@@ -20,6 +20,13 @@ function callAPIWithUserIP(userIP) {
     .then((data) => {
       // Traitez les données de réponse JSON ici
       console.log(data);
+      console.log(data.countryCode);
+      const flag = document.getElementById("flag");
+      flag.innerHTML = `<img
+      src="https://flagcdn.com/w160/${data.countryCode.toLowerCase()}.png"
+      srcset="https://flagcdn.com/w320/${data.countryCode.toLowerCase()}.png 2x"
+      width="160"
+      alt="${data.country}">`;
       // Une fois que vous avez obtenu la ville de l'utilisateur, appelez l'API météo
       callWeatherAPI(data.city);
     })
@@ -43,7 +50,9 @@ function callWeatherAPI(city) {
       // Mise à jour du contenu de la balise <div> avec les informations sur la météo
       const weatherInfo = document.getElementById("weather-info");
       weatherInfo.innerHTML = `
-        <strong>Ville:</strong> ${data.location.name}<br>
+        <strong>Localisation:</strong> ${data.location.name}, ${
+        data.location.country
+      }<br>
         <strong>Température actuelle:</strong> ${data.current.temp_c}°C<br>
         <strong>Sensation thermique:</strong> ${data.current.feelslike_c}°C<br>
         <strong>Direction du vent:</strong> ${data.current.wind_dir}<br>
@@ -60,5 +69,4 @@ function callWeatherAPI(city) {
     });
 }
 
-// Utilisation :
 getUserIP(callAPIWithUserIP);
