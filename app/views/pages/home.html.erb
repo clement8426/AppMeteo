@@ -34,7 +34,7 @@
                                 <div><strong class="small"><%= visitor.temperature %>°</strong></div>
                                 <div class="small"><%= visitor.weatherCondition %></div>
                                 <div class="small"><%= visitor.dayOrNight %></div>
-                                <div class="small"><%= visitor.created_at.strftime('%d-%m') %></div>
+                                <div class="small"><%= (Time.now - visitor.created_at) < 60.seconds ? (Time.now - visitor.created_at).to_i.to_s + " sec" : time_ago_in_words(visitor.created_at).gsub(" minutes", " min").gsub(" minute", " min") %></div>
                             </div>
                         </li>
                         <% end %>
