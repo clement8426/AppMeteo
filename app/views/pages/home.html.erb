@@ -1,5 +1,5 @@
 <body>
-<div class="container-fluid">
+<div class="container-fluid" style="height: 100vh">
 
 <form class="form-inline d-flex mt-4 w-50">
   <input class="form-control mr-sm-4 text-center" type="search" placeholder="Ville/pays" aria-label="Search">
@@ -17,14 +17,19 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-body">
-          <h1>Last 10 Visitors</h1>
+          <h1 class="text-center">Recent checks (10)</h1>
+            <div class="d-flex justify-content-between">
+                <div>Location</div>
+                <div>Temperature</div>
+                <div>Weather</div>
+                <div>Date</div>
+            </div>
 
-          <ul>
             <% Visitor.order(created_at: :desc).limit(10).each do |visitor| %>
-              <li>
+              <ul>
                 <img src="https://flagcdn.com/w20/<%= visitor.countryCode.downcase %>.png"
                 srcset="https://flagcdn.com/w40/<%= visitor.countryCode.downcase %>.png 2x"
-                width="40"
+                width="20"
                 alt="<%= visitor.country %>">
                 <%= visitor.country %> - <%= visitor.city %> - <%= visitor.temperature %> - <%= visitor.windSpeed %> - <%= visitor.weatherCondition %> - <%= visitor.precipitation %> - <%= visitor.dayOrNight %>
               </li>

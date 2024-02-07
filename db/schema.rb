@@ -28,5 +28,4 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_07_013611) do
     t.float "precipitation"
     t.string "dayOrNight"
   end
-
 end
