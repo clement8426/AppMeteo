@@ -15,9 +15,7 @@ function getUserIP(callback) {
 
 // Appeler l'API avec l'adresse IP récupérée
 function callAPIWithUserIP(userIP) {
-  fetch(
-    `https://api.ipgeolocation.io/ipgeo?apiKey=2cf155d10eb64d54b589516ff47fb182&ip=${userIP}`
-  )
+  fetch(`https://geolocation-db.com/json/${userIP}`)
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
@@ -25,8 +23,8 @@ function callAPIWithUserIP(userIP) {
       console.log(userIP);
       const flag = document.getElementById("flag");
       flag.innerHTML = `<img
-      src="https://flagcdn.com/w160/${data.country_code2.toLowerCase()}.png"
-      srcset="https://flagcdn.com/w320/${data.country_code2.toLowerCase()}.png 2x"
+      src="https://flagcdn.com/w160/${data.country_code.toLowerCase()}.png"
+      srcset="https://flagcdn.com/w320/${data.country_code.toLowerCase()}.png 2x"
       width="50"
       alt="${data.country}">`;
 
@@ -65,10 +63,10 @@ function callWeatherAPI(city, userIP, locationData) {
       // Combiner les données de localisation et de météo dans un seul objet
       const postData = {
         visitors: {
-          country: locationData.country_name_official,
+          country: locationData.country_name,
           city: locationData.city,
           userIP: userIP,
-          countryCode: locationData.country_code2.toLowerCase(),
+          countryCode: locationData.country_code.toLowerCase(),
           temperature: weatherData.current.temp_c,
           windSpeed: weatherData.current.wind_kph,
           weatherCondition: weatherData.current.cloud ? "Dégagé" : "Nuageux",
