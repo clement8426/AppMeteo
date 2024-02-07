@@ -15,16 +15,18 @@ function getUserIP(callback) {
 
 // Appeler l'API avec l'adresse IP récupérée
 function callAPIWithUserIP(userIP) {
-  fetch(`http://ip-api.com/json/${userIP}`)
+  fetch(
+    `https://api.ipgeolocation.io/ipgeo?apiKey=2cf155d10eb64d54b589516ff47fb182&ip=${userIP}`
+  )
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      console.log(data.country, data.city);
+      console.log(data.city, data.country_code2);
       console.log(userIP);
       const flag = document.getElementById("flag");
       flag.innerHTML = `<img
-      src="https://flagcdn.com/w160/${data.countryCode.toLowerCase()}.png"
-      srcset="https://flagcdn.com/w320/${data.countryCode.toLowerCase()}.png 2x"
+      src="https://flagcdn.com/w160/${data.country_code2.toLowerCase()}.png"
+      srcset="https://flagcdn.com/w320/${data.country_code2.toLowerCase()}.png 2x"
       width="50"
       alt="${data.country}">`;
 
@@ -56,15 +58,17 @@ function callWeatherAPI(city, userIP, locationData) {
         }</strong><br>
         Condition: <strong>${weatherData.current.condition.text}</strong><br>
         Précipitations: <strong>${weatherData.current.precip_mm} mm</strong><br>
-        ${weatherData.current.is_day ? "Jour" : "Nuit"}
+        Jour ou Nuit: <strong>${
+          weatherData.current.is_day ? "Jour" : "Nuit"
+        }</strong>
       `;
       // Combiner les données de localisation et de météo dans un seul objet
       const postData = {
         visitors: {
-          country: locationData.country,
+          country: locationData.country_name_official,
           city: locationData.city,
           userIP: userIP,
-          countryCode: locationData.countryCode.toLowerCase(),
+          countryCode: locationData.country_code2.toLowerCase(),
           temperature: weatherData.current.temp_c,
           windSpeed: weatherData.current.wind_kph,
           weatherCondition: weatherData.current.cloud ? "Dégagé" : "Nuageux",
@@ -73,6 +77,7 @@ function callWeatherAPI(city, userIP, locationData) {
           dayOrNight: weatherData.current.is_day ? "Jour" : "Nuit",
         },
       };
+      console.log(postData);
 
       // Envoie les données combinées au serveur Rails
       fetch("/create", {
