@@ -18,9 +18,6 @@ function callAPIWithUserIP(userIP) {
   fetch(`https://geolocation-db.com/json/${userIP}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-      console.log(data.city, data.country_code2);
-      console.log(userIP);
       const flag = document.getElementById("flag");
       flag.innerHTML = `<img
 
@@ -48,9 +45,7 @@ function callWeatherAPI(city, userIP, locationData) {
   )
     .then((response) => response.json())
     .then((weatherData) => {
-      console.log(weatherData);
       const weatherInfo = document.getElementById("weather-info");
-
       const weatherInfoTown =document.getElementById("weather-info-town");
       const weatherInfoCountry = document.getElementById("weather-info-country");
       const weatherInfoTemperature = document.getElementById("weather-info-temperature");
@@ -84,7 +79,6 @@ function callWeatherAPI(city, userIP, locationData) {
           dayOrNight: weatherData.current.is_day ? "Jour" : "Nuit",
         },
       };
-      console.log(postData);
 
       // Envoie les données combinées au serveur Rails
       fetch("/create", {

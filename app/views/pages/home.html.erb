@@ -1,6 +1,6 @@
 <div class="container-fluid" style="height: 100vh">
-    <form class="form-inline d-flex mt-4 w-50">
-        <input class="form-control mr-sm-4 text-center" type="search" placeholder="Ville/pays" aria-label="Search">
+    <form id="search-form" class="form-inline d-flex mt-4 w-50">
+        <input id="search-input" class="form-control mr-sm-4 text-center" type="search" placeholder="Ville/pays" aria-label="Search">
         <button class="btn btn-secondary" type="submit" style="margin-right: 12px;">Chercher</button>
     </form>
     <div class="row mt-3">
@@ -49,33 +49,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Update timer every second for each visitor
-        setInterval(updateTimers, 1000);
-    });
-
-    function updateTimers() {
-        var visitors = document.querySelectorAll("[id^=timer_]");
-        visitors.forEach(function(visitor) {
-            var createdTime = new Date(visitor.getAttribute('data-created-at'));
-            var currentTime = new Date();
-            var elapsedTimeInSeconds = Math.floor((currentTime - createdTime) / 1000);
-            visitor.innerText = formatTime(elapsedTimeInSeconds);
-        });
-    }
-
-    function formatTime(seconds) {
-        if (seconds < 60) {
-            return seconds + " sec";
-        } else {
-            var minutes = Math.floor(seconds / 60);
-            return minutes + " min";
-        }
-    }
-
-    function pad(number) {
-        return (number < 10 ? "0" : "") + number;
-    }
-</script>
