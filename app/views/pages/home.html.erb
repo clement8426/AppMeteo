@@ -5,7 +5,7 @@
     </form>
     <div class="row mt-3">
         <div class="col-md-6">
-            <div class="card"  style="background-color: #92BCEA">
+            <div class="card" style="background-color: #92BCEA">
                 <div class="card-body">
                     <div id="flag"></div>
                     <div id="weather-info"></div>
@@ -14,55 +14,54 @@
         </div>
         <div class="col-md-6">
             <div class="card" style="background-color: #92BCEA">
-<div class="card-body full-width-list">
-                    <h1 class="text-center">Recent checks (10)</h1>
-                    <div class="d-flex justify-content-between mb-2">
-                        <div><strong>Location</strong></div>
-                        <div><strong>Temperature</strong></div>
-                        <div><strong>Weather</strong></div>
-                        <div><strong>Day/Night</strong></div>
-                        <div><strong>Date</strong></div>
+                <div class="card-body full-width-list">
+                    <h1 class="text-center mb-3" style="font-size: 24px; font-weight: bold;">Recent checks (10)</h1>
+                    <div class="d-flex justify-content-between mb-4" style="border-bottom: 1px solid #617073;">
+                        <div style="color: #171A21; font-size: 20px">Location</div>
+                        <div style="color: #171A21; font-size: 20px">Temperature</div>
+                        <div style="color: #171A21; font-size: 20px">Weather</div>
+                        <div style="color: #171A21; font-size: 20px">Day/Night</div>
+                        <div style="color: #171A21; font-size: 20px">Date</div>
                     </div>
                     <ul style="padding-left: 0; list-style-type: none;">
-                      <% Visitor.order(created_at: :desc).limit(10).each do |visitor| %>
-                      <%= turbo_frame_tag "visitor#{visitor.id}" do %>
-                          <%= render 'shared/visitor', visitor: visitor %>
+                        <% Visitor.order(created_at: :desc).limit(10).each do |visitor| %>
+                            <%= turbo_frame_tag "visitor#{visitor.id}" do %>
+                                <%= render 'shared/visitor', visitor: visitor %>
+                            <% end %>
                         <% end %>
-                      <% end %>
                     </ul>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // Update timer every second for each visitor
-    setInterval(updateTimers, 1000);
-  });
+    document.addEventListener("DOMContentLoaded", function() {
+        // Update timer every second for each visitor
+        setInterval(updateTimers, 1000);
+    });
 
-function updateTimers() {
-  var visitors = document.querySelectorAll("[id^=timer_]");
-  visitors.forEach(function(visitor) {
-    var createdTime = new Date(visitor.getAttribute('data-created-at'));
-    var currentTime = new Date();
-    var elapsedTimeInSeconds = Math.floor((currentTime - createdTime) / 1000);
-    visitor.innerText = formatTime(elapsedTimeInSeconds);
-  });
-}
+    function updateTimers() {
+        var visitors = document.querySelectorAll("[id^=timer_]");
+        visitors.forEach(function(visitor) {
+            var createdTime = new Date(visitor.getAttribute('data-created-at'));
+            var currentTime = new Date();
+            var elapsedTimeInSeconds = Math.floor((currentTime - createdTime) / 1000);
+            visitor.innerText = formatTime(elapsedTimeInSeconds);
+        });
+    }
 
-function formatTime(seconds) {
-  if (seconds < 60) {
-    return seconds + " sec";
-  } else {
-    var minutes = Math.floor(seconds / 60);
-    return minutes + " min";
-  }
-}
+    function formatTime(seconds) {
+        if (seconds < 60) {
+            return seconds + " sec";
+        } else {
+            var minutes = Math.floor(seconds / 60);
+            return minutes + " min";
+        }
+    }
 
-  function pad(number) {
-    return (number < 10 ? "0" : "") + number;
-  }
+    function pad(number) {
+        return (number < 10 ? "0" : "") + number;
+    }
 </script>

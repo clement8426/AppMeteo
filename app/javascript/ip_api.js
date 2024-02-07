@@ -48,15 +48,16 @@ function callWeatherAPI(city, userIP, locationData) {
       console.log(weatherData);
       const weatherInfo = document.getElementById("weather-info");
       weatherInfo.innerHTML = `
-        <strong>${weatherData.location.name}</strong><br>
-        Température: <strong>${weatherData.current.temp_c}°C</strong><br>
-        Vent: <strong>${weatherData.current.wind_kph} km/h</strong><br>
-        Nuage: <strong>${
+        <div style="color: black; font-size: 50px"><strong>${weatherData.location.name}</strong><br></div>
+        <div style="color: black; font-size: 40px">${weatherData.location.country}</div><br>
+        <div style="color: black; font-size: 40px">Température: <strong>${weatherData.current.temp_c}°C</strong><br></div>
+        <div style="color: black; font-size: 40px">Vent: <strong>${weatherData.current.wind_kph} km/h</strong><br></div>
+        <div style="color: black; font-size: 40px">Nuage: <strong>${
           weatherData.current.cloud ? "Dégagé" : "Nuageux"
-        }</strong><br>
-        Condition: <strong>${weatherData.current.condition.text}</strong><br>
-        Précipitations: <strong>${weatherData.current.precip_mm} mm</strong><br>
-        ${weatherData.current.is_day ? "Jour" : "Nuit"}
+        }</strong><br></div>
+        <div style="color: black; font-size: 40px">Condition: <strong>${weatherData.current.condition.text}</strong><br></div>
+        <div style="color: black; font-size: 40px">Précipitations: <strong>${weatherData.current.precip_mm} mm</strong><br></div>
+        <div style="color: black; font-size: 40px">${weatherData.current.is_day ? "Jour" : "Nuit"}</div>
       `;
       // Combiner les données de localisation et de météo dans un seul objet
       const postData = {
