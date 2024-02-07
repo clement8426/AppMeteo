@@ -18,9 +18,6 @@ function callAPIWithUserIP(userIP) {
   fetch(`https://geolocation-db.com/json/${userIP}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-      console.log(data.city, data.country_code2);
-      console.log(userIP);
       const flag = document.getElementById("flag");
       flag.innerHTML = `<img
       src="https://flagcdn.com/w160/${data.country_code.toLowerCase()}.png"
@@ -45,19 +42,32 @@ function callWeatherAPI(city, userIP, locationData) {
   )
     .then((response) => response.json())
     .then((weatherData) => {
-      console.log(weatherData);
       const weatherInfo = document.getElementById("weather-info");
       weatherInfo.innerHTML = `
-        <div style="color: black; font-size: 50px"><strong>${weatherData.location.name}</strong><br></div>
-        <div style="color: black; font-size: 40px">${weatherData.location.country}</div><br>
-        <div style="color: black; font-size: 40px">Température: <strong>${weatherData.current.temp_c}°C</strong><br></div>
-        <div style="color: black; font-size: 40px">Vent: <strong>${weatherData.current.wind_kph} km/h</strong><br></div>
+        <div style="color: black; font-size: 50px"><strong>${
+          weatherData.location.name
+        }</strong><br></div>
+        <div style="color: black; font-size: 40px">${
+          weatherData.location.country
+        }</div><br>
+        <div style="color: black; font-size: 40px">Température: <strong>${
+          weatherData.current.temp_c
+        }°C</strong><br></div>
+        <div style="color: black; font-size: 40px">Vent: <strong>${
+          weatherData.current.wind_kph
+        } km/h</strong><br></div>
         <div style="color: black; font-size: 40px">Nuage: <strong>${
           weatherData.current.cloud ? "Dégagé" : "Nuageux"
         }</strong><br></div>
-        <div style="color: black; font-size: 40px">Condition: <strong>${weatherData.current.condition.text}</strong><br></div>
-        <div style="color: black; font-size: 40px">Précipitations: <strong>${weatherData.current.precip_mm} mm</strong><br></div>
-        <div style="color: black; font-size: 40px">${weatherData.current.is_day ? "Jour" : "Nuit"}</div>
+        <div style="color: black; font-size: 40px">Condition: <strong>${
+          weatherData.current.condition.text
+        }</strong><br></div>
+        <div style="color: black; font-size: 40px">Précipitations: <strong>${
+          weatherData.current.precip_mm
+        } mm</strong><br></div>
+        <div style="color: black; font-size: 40px">${
+          weatherData.current.is_day ? "Jour" : "Nuit"
+        }</div>
 
       `;
       // Combiner les données de localisation et de météo dans un seul objet
@@ -75,7 +85,6 @@ function callWeatherAPI(city, userIP, locationData) {
           dayOrNight: weatherData.current.is_day ? "Jour" : "Nuit",
         },
       };
-      console.log(postData);
 
       // Envoie les données combinées au serveur Rails
       fetch("/create", {
