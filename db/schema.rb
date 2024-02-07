@@ -22,5 +22,4 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_07_003733) do
     t.string "userIP"
     t.string "countryCode"
   end
-
 end
