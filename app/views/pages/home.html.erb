@@ -22,7 +22,19 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-body">
-          Contenu de la deuxième div (50% de la largeur)
+          <h1>Last 10 Visitors</h1>
+
+          <ul>
+            <% Visitor.order(created_at: :desc).limit(10).each do |visitor| %>
+              <li>
+                <img src="https://flagcdn.com/w20/<%= visitor.countryCode.downcase %>.png"
+                srcset="https://flagcdn.com/w40/<%= visitor.countryCode.downcase %>.png 2x"
+                width="40"
+                alt="<%= visitor.country %>">
+                <%= visitor.country %> - <%= visitor.city %>
+              </li>
+            <% end %>
+          </ul>
         </div>
       </div>
     </div>

@@ -20,13 +20,41 @@ function callAPIWithUserIP(userIP) {
     .then((data) => {
       // Traitez les données de réponse JSON ici
       console.log(data);
-      console.log(data.countryCode);
+      console.log(data.country, data.city);
+      console.log(userIP);
       const flag = document.getElementById("flag");
       flag.innerHTML = `<img
       src="https://flagcdn.com/w160/${data.countryCode.toLowerCase()}.png"
       srcset="https://flagcdn.com/w320/${data.countryCode.toLowerCase()}.png 2x"
       width="160"
       alt="${data.country}">`;
+
+      // Envoie les données de localisation au serveur Rails pour les enregistrer dans la base de données
+      fetch("/save_location", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          visitors: {
+            country: data.country,
+            city: data.city,
+            userIP: userIP,
+            countryCode: data.countryCode.toLowerCase(),
+          },
+        }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Erreur lors de l'enregistrement de la position");
+          }
+          // Gestion du succès de l'enregistrement
+        })
+        .catch((error) => {
+          console.error("Erreur:", error);
+          // Gestion des erreurs
+        });
+
       // Une fois que vous avez obtenu la ville de l'utilisateur, appelez l'API météo
       callWeatherAPI(data.city);
     })
