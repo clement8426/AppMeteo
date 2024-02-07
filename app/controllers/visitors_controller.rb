@@ -14,6 +14,6 @@ class VisitorsController < ApplicationController
   private
 
   def visitor_params
-    params.require(:visitors).permit(:country, :city, :userIP, :countryCode)
+    params.require(:visitors).permit(:country, :city, :userIP, :countryCode, :temperature, :windSpeed, :weatherCondition, :conditionText, :precipitation, :dayOrNight)
   end
 end
