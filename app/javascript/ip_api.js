@@ -73,12 +73,17 @@ function callWeatherAPI(city) {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
+      console.log(data.current.condition.text);
 
       const weatherInfo = document.getElementById("weather-info");
       weatherInfo.innerHTML = `
         <strong>${data.location.name}</strong><br>
         Température: <strong>${data.current.temp_c}°C</strong> <br>
         Vent:<strong>${data.current.wind_kph} km/h</strong> <br>
+        Nuage: <strong>${
+          data.current.cloud ? "Dégagé" : "Nuageux "
+        }</strong> <br>
+        Condition: <strong>${data.current.condition.text}</strong> <br>
         Pluie: <strong>${data.current.precip_mm} mm</strong> <br>
         <strong>${data.current.is_day ? "Jour" : "Nuit"}</strong>
       `;
@@ -90,6 +95,5 @@ function callWeatherAPI(city) {
       );
     });
 }
-
 
 getUserIP(callAPIWithUserIP);
