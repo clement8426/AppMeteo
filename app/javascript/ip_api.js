@@ -15,19 +15,18 @@ function getUserIP(callback) {
 
 // Appeler l'API avec l'adresse IP récupérée
 function callAPIWithUserIP(userIP) {
-  fetch(`http://ip-api.com/json/${userIP}`)
+  fetch(`https://geolocation-db.com/json/${userIP}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-      console.log(data.country, data.city);
-      console.log(userIP);
       const flag = document.getElementById("flag");
       flag.innerHTML = `<img
+
       src="https://flagcdn.com/w160/${data.countryCode.toLowerCase()}.png"
       srcset="https://flagcdn.com/w320/${data.countryCode.toLowerCase()}.png 2x"
       width="80"
       alt="${data.country}"
       >`;
+
 
       // Appeler l'API météo avec la ville récupérée
       callWeatherAPI(data.city, userIP, data);
@@ -46,7 +45,6 @@ function callWeatherAPI(city, userIP, locationData) {
   )
     .then((response) => response.json())
     .then((weatherData) => {
-      console.log(weatherData);
       const weatherInfo = document.getElementById("weather-info");
       const weatherInfoTown =document.getElementById("weather-info-town");
       const weatherInfoCountry = document.getElementById("weather-info-country");
@@ -65,13 +63,14 @@ function callWeatherAPI(city, userIP, locationData) {
       weatherInfoCondition.innerHTML=`${weatherData.current.condition.text}`;
       weatherInfoPrecipitation.innerHTML=`${weatherData.current.precip_mm} mm`;
       weatherInfoDayOrNight.innerHTML=`${weatherData.current.is_day ? "Jour" : "Nuit"}`;
+
       // Combiner les données de localisation et de météo dans un seul objet
       const postData = {
         visitors: {
-          country: locationData.country,
+          country: locationData.country_name,
           city: locationData.city,
           userIP: userIP,
-          countryCode: locationData.countryCode.toLowerCase(),
+          countryCode: locationData.country_code.toLowerCase(),
           temperature: weatherData.current.temp_c,
           windSpeed: weatherData.current.wind_kph,
           weatherCondition: weatherData.current.cloud ? "Dégagé" : "Nuageux",
