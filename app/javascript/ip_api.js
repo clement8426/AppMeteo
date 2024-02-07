@@ -15,7 +15,7 @@ function getUserIP(callback) {
 
 // Appeler l'API avec l'adresse IP récupérée
 function callAPIWithUserIP(userIP) {
-  fetch(`https://ip-api.com/json/${userIP}`)
+  fetch(`http://ip-api.com/json/${userIP}`)
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
