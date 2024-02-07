@@ -6,12 +6,19 @@ class VisitorsController < ApplicationController
     @visitor = Visitor.new(visitor_params)
 
     if @visitor.save
-      render json: { message: 'Position enregistrée avec succès' }, status: :ok
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "visitor#{@visitor.id}",
+            partial: "shared/visitor",
+            locals: {visitor: @visitor}
+          )
+        end
+      end
     else
       render json: { error: 'Erreur lors de l\'enregistrement de la position' }, status: :unprocessable_entity
     end
   end
-
   private
 
   def visitor_params

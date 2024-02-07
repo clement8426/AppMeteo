@@ -24,20 +24,11 @@
                         <div><strong>Date</strong></div>
                     </div>
                     <ul style="padding-left: 0; list-style-type: none;">
-                        <% Visitor.order(created_at: :desc).limit(10).each do |visitor| %>
-                        <li class="m-1 list-item" style="none">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <img src="https://flagcdn.com/w20/<%= visitor.countryCode.downcase %>.png" srcset="https://flagcdn.com/w40/<%= visitor.countryCode.downcase %>.png 2x" width="20" alt="<%= visitor.country %>">
-                                    <%= visitor.city %>
-                                </div>
-                                <div><strong class="small"><%= visitor.temperature %>°</strong></div>
-                                <div class="small"><%= visitor.weatherCondition %></div>
-                                <div class="small"><%= visitor.dayOrNight %></div>
-                                <div class="small"><%= (Time.now - visitor.created_at) < 60.seconds ? (Time.now - visitor.created_at).to_i.to_s + " sec" : time_ago_in_words(visitor.created_at).gsub(" minutes", " min").gsub(" minute", " min") %></div>
-                            </div>
-                        </li>
+                      <% Visitor.order(created_at: :desc).limit(10).each do |visitor| %>
+                      <%= turbo_frame_tag "visitor#{visitor.id}" do %>
+                          <%= render 'shared/visitor', visitor: visitor %>
                         <% end %>
+                      <% end %>
                     </ul>
                 </div>
             </div>
@@ -45,3 +36,33 @@
         </div>
     </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Update timer every second for each visitor
+    setInterval(updateTimers, 1000);
+  });
+
+function updateTimers() {
+  var visitors = document.querySelectorAll("[id^=timer_]");
+  visitors.forEach(function(visitor) {
+    var createdTime = new Date(visitor.getAttribute('data-created-at'));
+    var currentTime = new Date();
+    var elapsedTimeInSeconds = Math.floor((currentTime - createdTime) / 1000);
+    visitor.innerText = formatTime(elapsedTimeInSeconds);
+  });
+}
+
+function formatTime(seconds) {
+  if (seconds < 60) {
+    return seconds + " sec";
+  } else {
+    var minutes = Math.floor(seconds / 60);
+    return minutes + " min";
+  }
+}
+
+  function pad(number) {
+    return (number < 10 ? "0" : "") + number;
+  }
+</script>
