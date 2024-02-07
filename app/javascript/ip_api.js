@@ -25,8 +25,9 @@ function callAPIWithUserIP(userIP) {
       flag.innerHTML = `<img
       src="https://flagcdn.com/w160/${data.countryCode.toLowerCase()}.png"
       srcset="https://flagcdn.com/w320/${data.countryCode.toLowerCase()}.png 2x"
-      width="50"
-      alt="${data.country}">`;
+      width="80"
+      alt="${data.country}"
+      >`;
 
       // Appeler l'API météo avec la ville récupérée
       callWeatherAPI(data.city, userIP, data);
@@ -47,18 +48,23 @@ function callWeatherAPI(city, userIP, locationData) {
     .then((weatherData) => {
       console.log(weatherData);
       const weatherInfo = document.getElementById("weather-info");
-      weatherInfo.innerHTML = `
-        <div style="color: black; font-size: 50px"><strong>${weatherData.location.name}</strong><br></div>
-        <div style="color: black; font-size: 40px">${weatherData.location.country}</div><br>
-        <div style="color: black; font-size: 40px">Température: <strong>${weatherData.current.temp_c}°C</strong><br></div>
-        <div style="color: black; font-size: 40px">Vent: <strong>${weatherData.current.wind_kph} km/h</strong><br></div>
-        <div style="color: black; font-size: 40px">Nuage: <strong>${
-          weatherData.current.cloud ? "Dégagé" : "Nuageux"
-        }</strong><br></div>
-        <div style="color: black; font-size: 40px">Condition: <strong>${weatherData.current.condition.text}</strong><br></div>
-        <div style="color: black; font-size: 40px">Précipitations: <strong>${weatherData.current.precip_mm} mm</strong><br></div>
-        <div style="color: black; font-size: 40px">${weatherData.current.is_day ? "Jour" : "Nuit"}</div>
-      `;
+      const weatherInfoTown =document.getElementById("weather-info-town");
+      const weatherInfoCountry = document.getElementById("weather-info-country");
+      const weatherInfoTemperature = document.getElementById("weather-info-temperature");
+      const weatherInfoWind = document.getElementById("weather-info-wind");
+      const weatherInfoCloud = document.getElementById("weather-info-cloud");
+      const weatherInfoCondition = document.getElementById("weather-info-condition");
+      const weatherInfoPrecipitation = document.getElementById("weather-info-precipitation");
+      const weatherInfoDayOrNight = document.getElementById("weather-info-day-or-night");
+
+      weatherInfoCountry.innerHTML=`${weatherData.location.country}`;
+      weatherInfoTown.innerHTML=`${weatherData.location.name}`;
+      weatherInfoTemperature.innerHTML=`${weatherData.current.temp_c}°C`;
+      weatherInfoWind.innerHTML=`${weatherData.current.wind_kph} km/h`;
+      weatherInfoCloud.innerHTML=`${weatherData.current.cloud ? "Dégagé" : "Nuageux"}`;
+      weatherInfoCondition.innerHTML=`${weatherData.current.condition.text}`;
+      weatherInfoPrecipitation.innerHTML=`${weatherData.current.precip_mm} mm`;
+      weatherInfoDayOrNight.innerHTML=`${weatherData.current.is_day ? "Jour" : "Nuit"}`;
       // Combiner les données de localisation et de météo dans un seul objet
       const postData = {
         visitors: {
