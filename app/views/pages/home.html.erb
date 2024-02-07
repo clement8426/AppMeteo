@@ -31,8 +31,8 @@
                 srcset="https://flagcdn.com/w40/<%= visitor.countryCode.downcase %>.png 2x"
                 width="20"
                 alt="<%= visitor.country %>">
-                 <%= visitor.city %>
-              </ul>
+                <%= visitor.country %> - <%= visitor.city %> - <%= visitor.temperature %> - <%= visitor.windSpeed %> - <%= visitor.weatherCondition %> - <%= visitor.precipitation %> - <%= visitor.dayOrNight %>
+              </li>
             <% end %>
           </ul>
         </div>

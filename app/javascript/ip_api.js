@@ -18,7 +18,6 @@ function callAPIWithUserIP(userIP) {
   fetch(`http://ip-api.com/json/${userIP}`)
     .then((response) => response.json())
     .then((data) => {
-      // Traitez les données de réponse JSON ici
       console.log(data);
       console.log(data.country, data.city);
       console.log(userIP);
@@ -29,59 +28,72 @@ function callAPIWithUserIP(userIP) {
       width="50"
       alt="${data.country}">`;
 
-      // Envoie les données de localisation au serveur Rails pour les enregistrer dans la base de données
-      fetch("/save_location", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          visitors: {
-            country: data.country,
-            city: data.city,
-            userIP: userIP,
-            countryCode: data.countryCode.toLowerCase(),
-          },
-        }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Erreur lors de l'enregistrement de la position");
-          }
-          // Gestion du succès de l'enregistrement
-        })
-        .catch((error) => {
-          console.error("Erreur:", error);
-          // Gestion des erreurs
-        });
-
-      // Une fois que vous avez obtenu la ville de l'utilisateur, appelez l'API météo
-      callWeatherAPI(data.city);
+      // Appeler l'API météo avec la ville récupérée
+      callWeatherAPI(data.city, userIP, data);
     })
     .catch((error) => {
       console.error(
-        "Une erreur s'est produite lors de l'appel de l'API : ",
+        "Une erreur s'est produite lors de l'appel de l'API:",
         error
       );
     });
 }
 
-function callWeatherAPI(city) {
+function callWeatherAPI(city, userIP, locationData) {
   fetch(
     `https://api.weatherapi.com/v1/current.json?key=17e97ad8c8fc4b7d9b2211954240602&q=${city}&aqi=no`
   )
     .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-
+    .then((weatherData) => {
+      console.log(weatherData);
       const weatherInfo = document.getElementById("weather-info");
       weatherInfo.innerHTML = `
-        <strong>${data.location.name}</strong><br>
-        Température: <strong>${data.current.temp_c}°C</strong> <br>
-        Vent:<strong>${data.current.wind_kph} km/h</strong> <br>
-        Pluie: <strong>${data.current.precip_mm} mm</strong> <br>
-        <strong>${data.current.is_day ? "Jour" : "Nuit"}</strong>
+        <strong>${weatherData.location.name}</strong><br>
+        Température: <strong>${weatherData.current.temp_c}°C</strong><br>
+        Vent: <strong>${weatherData.current.wind_kph} km/h</strong><br>
+        Nuage: <strong>${
+          weatherData.current.cloud ? "Dégagé" : "Nuageux"
+        }</strong><br>
+        Condition: <strong>${weatherData.current.condition.text}</strong><br>
+        Précipitations: <strong>${weatherData.current.precip_mm} mm</strong><br>
+        ${weatherData.current.is_day ? "Jour" : "Nuit"}
       `;
+      // Combiner les données de localisation et de météo dans un seul objet
+      const postData = {
+        visitors: {
+          country: locationData.country,
+          city: locationData.city,
+          userIP: userIP,
+          countryCode: locationData.countryCode.toLowerCase(),
+          temperature: weatherData.current.temp_c,
+          windSpeed: weatherData.current.wind_kph,
+          weatherCondition: weatherData.current.cloud ? "Dégagé" : "Nuageux",
+          conditionText: weatherData.current.condition.text,
+          precipitation: weatherData.current.precip_mm,
+          dayOrNight: weatherData.current.is_day ? "Jour" : "Nuit",
+        },
+      };
+
+      // Envoie les données combinées au serveur Rails
+      fetch("/save_location", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Erreur lors de l'envoi des données au serveur");
+          }
+          console.log("Données envoyées avec succès");
+        })
+        .catch((error) => {
+          console.error(
+            "Erreur lors de l'envoi des données au serveur:",
+            error
+          );
+        });
     })
     .catch((error) => {
       console.error(
@@ -90,6 +102,5 @@ function callWeatherAPI(city) {
       );
     });
 }
-
 
 getUserIP(callAPIWithUserIP);
