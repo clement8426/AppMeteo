@@ -25,7 +25,7 @@ function callAPIWithUserIP(userIP) {
       flag.innerHTML = `<img
       src="https://flagcdn.com/w160/${data.countryCode.toLowerCase()}.png"
       srcset="https://flagcdn.com/w320/${data.countryCode.toLowerCase()}.png 2x"
-      width="160"
+      width="50"
       alt="${data.country}">`;
       // Une fois que vous avez obtenu la ville de l'utilisateur, appelez l'API météo
       callWeatherAPI(data.city);
