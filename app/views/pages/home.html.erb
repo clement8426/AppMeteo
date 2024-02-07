@@ -1,43 +1,47 @@
-<body>
 <div class="container-fluid" style="height: 100vh">
-
-<form class="form-inline d-flex mt-4 w-50">
-  <input class="form-control mr-sm-4 text-center" type="search" placeholder="Ville/pays" aria-label="Search">
-  <button class="btn btn-secondary" type="submit" style="margin-right: 12px;">Chercher</button>
-</form>
-  <div class="row mt-3">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">
-          <div id="flag"></div>
-          <div id="weather-info"></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">
-          <h1 class="text-center">Recent checks (10)</h1>
-            <div class="d-flex justify-content-between">
-                <div>Location</div>
-                <div>Temperature</div>
-                <div>Weather</div>
-                <div>Date</div>
+    <form class="form-inline d-flex mt-4 w-50">
+        <input class="form-control mr-sm-4 text-center" type="search" placeholder="Ville/pays" aria-label="Search">
+        <button class="btn btn-secondary" type="submit" style="margin-right: 12px;">Chercher</button>
+    </form>
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="card"  style="background-color: grey">
+                <div class="card-body">
+                    <div id="flag"></div>
+                    <div id="weather-info"></div>
+                </div>
             </div>
-        <ul>
-            <% Visitor.order(created_at: :desc).limit(10).each do |visitor| %>
-              <li>
-                <img src="https://flagcdn.com/w20/<%= visitor.countryCode.downcase %>.png"
-                srcset="https://flagcdn.com/w40/<%= visitor.countryCode.downcase %>.png 2x"
-                width="20"
-                alt="<%= visitor.country %>">
-                <%= visitor.city %> - <%= visitor.temperature %> - <%= (Time.now - visitor.created_at) < 60.seconds ? (Time.now - visitor.created_at).to_i.to_s + " sec" : time_ago_in_words(visitor.created_at).gsub(" minutes", " min").gsub(" minute", " min") %> - <%= visitor.weatherCondition %> - <%= visitor.precipitation %> - <%= visitor.dayOrNight %>
-              </li>
-            <% end %>
-          </ul>
         </div>
-      </div>
+        <div class="col-md-6">
+            <div class="card" style="background-color: grey">
+<div class="card-body full-width-list">
+                    <h1 class="text-center">Recent checks (10)</h1>
+                    <div class="d-flex justify-content-between mb-2">
+                        <div><strong>Location</strong></div>
+                        <div><strong>Temperature</strong></div>
+                        <div><strong>Weather</strong></div>
+                        <div><strong>Day/Night</strong></div>
+                        <div><strong>Date</strong></div>
+                    </div>
+                    <ul style="padding-left: 0; list-style-type: none;">
+                        <% Visitor.order(created_at: :desc).limit(10).each do |visitor| %>
+                        <li class="m-1 list-item" style="none">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <img src="https://flagcdn.com/w20/<%= visitor.countryCode.downcase %>.png" srcset="https://flagcdn.com/w40/<%= visitor.countryCode.downcase %>.png 2x" width="20" alt="<%= visitor.country %>">
+                                    <%= visitor.city %>
+                                </div>
+                                <div><strong class="small"><%= visitor.temperature %>°</strong></div>
+                                <div class="small"><%= visitor.weatherCondition %></div>
+                                <div class="small"><%= visitor.dayOrNight %></div>
+                                <div class="small"><%= visitor.created_at.strftime('%d-%m') %></div>
+                            </div>
+                        </li>
+                        <% end %>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
     </div>
-  </div>
 </div>
-</body>
