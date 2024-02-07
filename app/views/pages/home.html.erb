@@ -1,15 +1,10 @@
-<%= javascript_include_tag 'ip_api' %>
+<body>
+<div class="container-fluid">
 
-<div class="container">
-  <div class="row justify-content-center mt-5 mb-5">
-    <div class="col-md-6">
-      <form class="form-inline d-flex">
-        <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Search">
-        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Rechercher</button>
-      </form>
-    </div>
-  </div>
-
+<form class="form-inline d-flex mt-4 w-50">
+  <input class="form-control mr-sm-4 text-center" type="search" placeholder="Ville/pays" aria-label="Search">
+  <button class="btn btn-secondary" type="submit" style="margin-right: 12px;">Chercher</button>
+</form>
   <div class="row mt-3">
     <div class="col-md-6">
       <div class="card">
@@ -40,3 +35,4 @@
     </div>
   </div>
 </div>
+</body>
