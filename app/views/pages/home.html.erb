@@ -28,14 +28,14 @@
         <div class="col-md-6">
             <div class="card" style="background-color: #92BCEA">
                 <div class="card-body full-width-list">
-                    <h1 class="text-center mb-3" style="font-size: 24px; font-weight: bold;">Recent checks (10)</h1>
-                    <div class="d-flex justify-content-between mb-4" style="border-bottom: 1px solid #617073;">
-                        <div style="color: #171A21; font-size: 20px">Location</div>
-                        <div style="color: #171A21; font-size: 20px">Temperature</div>
-                        <div style="color: #171A21; font-size: 20px">Weather</div>
-                        <div style="color: #171A21; font-size: 20px">Day/Night</div>
-                        <div style="color: #171A21; font-size: 20px">Date</div>
-                    </div>
+                      <h1 class="text-center mb-3" style="font-size: 24px; font-weight: bold;">Recent checks (10)</h1>
+                      <div class="d-flex justify-content-between mb-4" style="border-bottom: 1px solid #617073;">
+    <div class="text-center" style="flex: 1; color: #171A21; font-size: 20px;">Location</div>
+    <div class="text-center" style="flex: 1; color: #171A21; font-size: 20px;">Temperature</div>
+    <div class="text-center" style="flex: 1; color: #171A21; font-size: 20px;">Weather</div>
+    <div class="text-center" style="flex: 1; color: #171A21; font-size: 20px;">Day/Night</div>
+    <div class="text-end me-3" style="flex: 1; color: #171A21; font-size: 20px;">Date</div>
+</div>
                     <ul style="padding-left: 0; list-style-type: none;">
                         <% Visitor.order(created_at: :desc).limit(10).each do |visitor| %>
                             <%= turbo_frame_tag "visitor#{visitor.id}" do %>

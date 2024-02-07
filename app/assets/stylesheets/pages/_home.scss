@@ -22,3 +22,16 @@ body{
 .footer .col-md-6 {
     width: 48%; /* Ajustez la largeur des colonnes selon vos besoins */
 }
+
+.list-item {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-bottom: 1px solid black;
+}
+
+.list-item > div {
+  flex: 1;
+  text-align: center;
+}
