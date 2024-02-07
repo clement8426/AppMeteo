@@ -75,7 +75,7 @@ function callWeatherAPI(city, userIP, locationData) {
       };
 
       // Envoie les données combinées au serveur Rails
-      fetch("/save_location", {
+      fetch("/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
