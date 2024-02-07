@@ -24,14 +24,14 @@
                 <div>Weather</div>
                 <div>Date</div>
             </div>
-
+        <ul>
             <% Visitor.order(created_at: :desc).limit(10).each do |visitor| %>
-              <ul>
+              <li>
                 <img src="https://flagcdn.com/w20/<%= visitor.countryCode.downcase %>.png"
                 srcset="https://flagcdn.com/w40/<%= visitor.countryCode.downcase %>.png 2x"
                 width="20"
                 alt="<%= visitor.country %>">
-                <%= visitor.country %> - <%= visitor.city %> - <%= visitor.temperature %> - <%= visitor.windSpeed %> - <%= visitor.weatherCondition %> - <%= visitor.precipitation %> - <%= visitor.dayOrNight %>
+                <%= visitor.city %> - <%= visitor.temperature %> - <%= (Time.now - visitor.created_at) < 60.seconds ? (Time.now - visitor.created_at).to_i.to_s + " sec" : time_ago_in_words(visitor.created_at).gsub(" minutes", " min").gsub(" minute", " min") %> - <%= visitor.weatherCondition %> - <%= visitor.precipitation %> - <%= visitor.dayOrNight %>
               </li>
             <% end %>
           </ul>
