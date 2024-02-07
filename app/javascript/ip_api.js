@@ -50,7 +50,7 @@ function callWeatherAPI(city) {
       weatherInfo.innerHTML = `
         <strong>${data.location.name}</strong><br>
         Température: <strong>${data.current.temp_c}°C</strong> <br>
-        <strong>${data.current.wind_kph} km/h</strong> <br>
+        Vent:<strong>${data.current.wind_kph} km/h</strong> <br>
         Pluie: <strong>${data.current.precip_mm} mm</strong> <br>
         <strong>${data.current.is_day ? "Jour" : "Nuit"}</strong>
       `;
