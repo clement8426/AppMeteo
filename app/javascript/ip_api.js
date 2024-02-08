@@ -25,6 +25,7 @@ function callAPIWithUserIP(userIP) {
       alt="${data.country_name}"
       >`;
 
+
       // Call the weather API with the retrieved city
       callWeatherAPI(data.city, userIP, data);
     })
