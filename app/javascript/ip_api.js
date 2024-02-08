@@ -19,23 +19,17 @@ function callAPIWithUserIP(userIP) {
     .then((response) => response.json())
     .then((data) => {
       const flag = document.getElementById("flag");
-      flag.innerHTML = `<img
-
-      src="https://flagcdn.com/w160/${data.countryCode.toLowerCase()}.png"
-      srcset="https://flagcdn.com/w320/${data.countryCode.toLowerCase()}.png 2x"
+      flag.innerHTML = `<img src="https://flagcdn.com/w160/${data.country_code.toLowerCase()}.png"
+      srcset="https://flagcdn.com/w320/${data.country_code.toLowerCase()}.png 2x"
       width="80"
-      alt="${data.country}"
+      alt="${data.country_name}"
       >`;
 
-
-      // Appeler l'API météo avec la ville récupérée
+      // Call the weather API with the retrieved city
       callWeatherAPI(data.city, userIP, data);
     })
     .catch((error) => {
-      console.error(
-        "Une erreur s'est produite lors de l'appel de l'API:",
-        error
-      );
+      console.error("An error occurred while calling the API:", error);
     });
 }
 
@@ -46,23 +40,36 @@ function callWeatherAPI(city, userIP, locationData) {
     .then((response) => response.json())
     .then((weatherData) => {
       const weatherInfo = document.getElementById("weather-info");
-      const weatherInfoTown =document.getElementById("weather-info-town");
-      const weatherInfoCountry = document.getElementById("weather-info-country");
-      const weatherInfoTemperature = document.getElementById("weather-info-temperature");
+      const weatherInfoTown = document.getElementById("weather-info-town");
+      const weatherInfoCountry = document.getElementById(
+        "weather-info-country"
+      );
+      const weatherInfoTemperature = document.getElementById(
+        "weather-info-temperature"
+      );
       const weatherInfoWind = document.getElementById("weather-info-wind");
       const weatherInfoCloud = document.getElementById("weather-info-cloud");
-      const weatherInfoCondition = document.getElementById("weather-info-condition");
-      const weatherInfoPrecipitation = document.getElementById("weather-info-precipitation");
-      const weatherInfoDayOrNight = document.getElementById("weather-info-day-or-night");
-
-      weatherInfoCountry.innerHTML=`${weatherData.location.country}`;
-      weatherInfoTown.innerHTML=`${weatherData.location.name}`;
-      weatherInfoTemperature.innerHTML=`${weatherData.current.temp_c}°C`;
-      weatherInfoWind.innerHTML=`${weatherData.current.wind_kph} km/h`;
-      weatherInfoCloud.innerHTML=`${weatherData.current.cloud ? "Dégagé" : "Nuageux"}`;
-      weatherInfoCondition.innerHTML=`${weatherData.current.condition.text}`;
-      weatherInfoPrecipitation.innerHTML=`${weatherData.current.precip_mm} mm`;
-      weatherInfoDayOrNight.innerHTML=`${weatherData.current.is_day ? "Jour" : "Nuit"}`;
+      const weatherInfoCondition = document.getElementById(
+        "weather-info-condition"
+      );
+      const weatherInfoPrecipitation = document.getElementById(
+        "weather-info-precipitation"
+      );
+      const weatherInfoDayOrNight = document.getElementById(
+        "weather-info-day-or-night"
+      );
+      weatherInfoCountry.innerHTML = `${weatherData.location.country}`;
+      weatherInfoTown.innerHTML = `${weatherData.location.name}`;
+      weatherInfoTemperature.innerHTML = `${weatherData.current.temp_c}°C`;
+      weatherInfoWind.innerHTML = `${weatherData.current.wind_kph} km/h`;
+      weatherInfoCloud.innerHTML = `${
+        weatherData.current.cloud ? "Dégagé" : "Nuageux"
+      }`;
+      weatherInfoCondition.innerHTML = `${weatherData.current.condition.text}`;
+      weatherInfoPrecipitation.innerHTML = `${weatherData.current.precip_mm} mm`;
+      weatherInfoDayOrNight.innerHTML = `${
+        weatherData.current.is_day ? "Jour" : "Nuit"
+      }`;
 
       // Combiner les données de localisation et de météo dans un seul objet
       const postData = {
@@ -92,7 +99,6 @@ function callWeatherAPI(city, userIP, locationData) {
           if (!response.ok) {
             throw new Error("Erreur lors de l'envoi des données au serveur");
           }
-          console.log("Données envoyées avec succès");
         })
         .catch((error) => {
           console.error(
