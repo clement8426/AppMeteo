@@ -68,9 +68,11 @@ function callWeatherAPI(city, userIP, locationData) {
       // Déterminez si le ciel est dégagé ou nuageux
       const isClearSky = weatherData.current.cloud === 0;
       if (isClearSky) {
-          weatherInfoCloud.innerHTML = '<img src="../../assets/clear_sky.png" alt="Ciel clair" width="50px" height="50px">';
+        weatherInfoCloud.innerHTML = '<img src="../../assets/cloudy_sky.png" alt="Nuageux" width="50px" height="50px">';
+
       } else {
-          weatherInfoCloud.innerHTML = '<img src="../../assets/cloudy_sky.png" alt="Nuageux" width="50px" height="50px">';
+        weatherInfoCloud.innerHTML = '<img src="../../assets/clear_sky.png" alt="Ciel clair" width="50px" height="50px">';
+
       }
 console.log(weatherData);
       weatherInfoCountry.innerHTML = `${weatherData.location.country}`;
