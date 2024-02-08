@@ -5,37 +5,67 @@
     </form>
     <div class="row mt-3">
         <div class="col-md-6">
-          <div class="card" style="background-color: #92BCEA">
-              <div class="card-body d-flex flex-column">
-                  <div class="d-flex align-items-center justify-content-between">
-                      <div id="weather-info-town" style="color: black; font-size: 50px"></div>
-                      <div id="flag"></div>
-                  </div>
-                  <div id="weather-info-country" style="color: black; font-size: 40px; border-bottom: 1px solid #617073;" class="flex-grow-1"></div>
-                  <div class="d-flex align-items-center justify-content-between mt-5">
-                       <div id="weather-info-temperature" style="color: black; font-size: 40px"></div>
-                      <div id="weather-info-precipitation" style="color: black; font-size: 40px"></div>
-                       <div id="weather-info-wind" style="color: black; font-size: 40px"></div>
-                  </div>
-                  <div class="d-flex align-items-center justify-content-between mt-5">
-                        <div id="weather-info-day-or-night" style="color: black; font-size: 40px"></div>
-                       <div id="weather-info-condition" style="color: black; font-size: 40px"></div>
-                      <div id="weather-info-cloud" style="color: black; font-size: 40px"></div>
-                  </div>
-              </div>
-          </div>
+            <div class="card" style="background-color: #92BCEA">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div id="weather-info-town" style="color: black; font-size: 50px"></div>
+                        <div id="flag"></div>
+                    </div>
+                    <div id="weather-info-country" style="color: black; font-size: 40px; border-bottom: 1px solid #617073;" class="flex-grow-1"></div>
+                    <div class="d-flex justify-content-center mt-5 mb-5">
+                        <div class="d-flex flex-column align-items-center justify-content-center mx-4">
+                            <div class="text-center">
+                                <img src="../../assets/température.png" alt="icone température" width="50" height="50">
+                            </div>
+                            <div style="color: black; font-size: 30px;" class="text-center">
+                                <div id="weather-info-temperature"></div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column align-items-center justify-content-center mx-4">
+                            <div class="text-center">
+                                <img src="../../assets/précipitation.png" alt="icone précipitation" width="50" height="50">
+                            </div>
+                            <div style="color: black; font-size: 30px;" class="text-center">
+                                <div id="weather-info-precipitation"></div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column align-items-center justify-content-center mx-4">
+                            <div class="text-center">
+                                <img src="../../assets/vent.png" alt="icone vent" width="50" height="50">
+                            </div>
+                            <div style="color: black; font-size: 30px;" class="text-center">
+                                <div id="weather-info-wind"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-5">
+                        <div style="color: black; font-size: 40px;">
+<div id="weather-info-day-or-night"></div>
+                        </div>
+
+                        <div style="color: black; font-size: 40px;">
+                            <div id="weather-info-cloud"></div>
+                        </div>
+                        <div style="color: black; font-size: 20px;">
+                            <div id="weather-info-condition"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-md-6">
             <div class="card" style="background-color: #92BCEA">
                 <div class="card-body full-width-list">
-                      <h1 class="text-center mb-3" style="font-size: 24px; font-weight: bold;">Recent checks (10)</h1>
-                      <div class="d-flex justify-content-between mb-4" style="border-bottom: 1px solid #617073;">
-    <div class="text-center" style="flex: 1; color: #171A21; font-size: 20px;">Location</div>
-    <div class="text-center" style="flex: 1; color: #171A21; font-size: 20px;">Temperature</div>
-    <div class="text-center" style="flex: 1; color: #171A21; font-size: 20px;">Weather</div>
-    <div class="text-center" style="flex: 1; color: #171A21; font-size: 20px;">Day/Night</div>
-    <div class="text-end me-3" style="flex: 1; color: #171A21; font-size: 20px;">Date</div>
-</div>
+                    <h1 class="text-center mb-3" style="font-size: 24px; font-weight: bold;">Recent checks (10)</h1>
+                    <div class="d-flex justify-content-between mb-4" style="border-bottom: 1px solid #617073;">
+                        <div class="text-center" style="flex: 1; color: #171A21; font-size: 20px;">Location</div>
+                        <div class="text-center" style="flex: 1; color: #171A21; font-size: 20px;">Temperature</div>
+                        <div class="text-center" style="flex: 1; color: #171A21; font-size: 20px;">Weather</div>
+                        <div class="text-center" style="flex: 1; color: #171A21; font-size: 20px;">Day/Night</div>
+                        <div class="text-end me-3" style="flex: 1; color: #171A21; font-size: 20px;">Date</div>
+                    </div>
                     <ul style="padding-left: 0; list-style-type: none;">
                         <% Visitor.order(created_at: :desc).limit(10).each do |visitor| %>
                             <%= turbo_frame_tag "visitor#{visitor.id}" do %>
@@ -52,7 +82,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-            <p>By Clement BASTIEN and Johan FILONNEAU</p>
+                <p>By Clement BASTIEN and Johan FILONNEAU</p>
             </div>
             <div class="col-md-4">
                 <p>Contact for more infos: testingstuff@gmail.com</p>

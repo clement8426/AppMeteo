@@ -49,28 +49,39 @@ function callWeatherAPI(city, userIP, locationData) {
         "weather-info-temperature"
       );
       const weatherInfoWind = document.getElementById("weather-info-wind");
-      const weatherInfoCloud = document.getElementById("weather-info-cloud");
       const weatherInfoCondition = document.getElementById(
         "weather-info-condition"
       );
       const weatherInfoPrecipitation = document.getElementById(
         "weather-info-precipitation"
       );
-      const weatherInfoDayOrNight = document.getElementById(
-        "weather-info-day-or-night"
-      );
+      const weatherInfoDayOrNight = document.getElementById("weather-info-day-or-night");
+      const isDay = weatherData.current.is_day;
+
+      if (isDay) {
+          weatherInfoDayOrNight.innerHTML = '<img src="../../assets/soleil.png" alt="Soleil" width="30px" height="30px">';
+      } else {
+          weatherInfoDayOrNight.innerHTML = '<img src="../../assets/lune.png" alt="Lune" width="30px" height="30px">';
+      }
+      const weatherInfoCloud = document.getElementById("weather-info-cloud");
+
+      // Déterminez si le ciel est dégagé ou nuageux
+      const isClearSky = weatherData.current.cloud === 0;
+      if (isClearSky) {
+        weatherInfoCloud.innerHTML = '<img src="../../assets/cloudy_sky.png" alt="Nuageux" width="50px" height="50px">';
+
+      } else {
+        weatherInfoCloud.innerHTML = '<img src="../../assets/clear_sky.png" alt="Ciel clair" width="50px" height="50px">';
+
+      }
+console.log(weatherData);
       weatherInfoCountry.innerHTML = `${weatherData.location.country}`;
       weatherInfoTown.innerHTML = `${weatherData.location.name}`;
       weatherInfoTemperature.innerHTML = `${weatherData.current.temp_c}°C`;
       weatherInfoWind.innerHTML = `${weatherData.current.wind_kph} km/h`;
-      weatherInfoCloud.innerHTML = `${
-        weatherData.current.cloud ? "Dégagé" : "Nuageux"
-      }`;
+
       weatherInfoCondition.innerHTML = `${weatherData.current.condition.text}`;
       weatherInfoPrecipitation.innerHTML = `${weatherData.current.precip_mm} mm`;
-      weatherInfoDayOrNight.innerHTML = `${
-        weatherData.current.is_day ? "Jour" : "Nuit"
-      }`;
 
       // Combiner les données de localisation et de météo dans un seul objet
       const postData = {
