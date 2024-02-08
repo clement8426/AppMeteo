@@ -19,13 +19,16 @@ function callAPIWithUserIP(userIP) {
     .then((response) => response.json())
     .then((data) => {
       const flag = document.getElementById("flag");
-      flag.innerHTML = `<img
-
-      src="https://flagcdn.com/w160/${data.countryCode.toLowerCase()}.png"
-      srcset="https://flagcdn.com/w320/${data.countryCode.toLowerCase()}.png 2x"
-      width="80"
-      alt="${data.country}"
-      >`;
+      if (data.countryCode) {
+        flag.innerHTML = `<img
+          src="https://flagcdn.com/w160/${data.countryCode.toLowerCase()}.png"
+          srcset="https://flagcdn.com/w320/${data.countryCode.toLowerCase()}.png 2x"
+          width="80"
+          alt="${data.country}"
+          >`;
+      } else {
+        console.error("La propriété countryCode n'est pas définie dans les données.");
+      }
 
 
       // Appeler l'API météo avec la ville récupérée
