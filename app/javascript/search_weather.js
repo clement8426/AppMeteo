@@ -35,7 +35,7 @@ function fetchWeatherData(searchTerm) {
       // Call the function to get country code and update flag image
       getCountryCode(countryName).then((countryCode) => {
         const flag = document.getElementById("flag");
-        flag.innerHTML = `<img src="https://flagcdn.com/w160/${countryCode}.png" srcset="https://flagcdn.com/w320/${countryCode}.png 2x" width="50" alt="${countryName}">`;
+        flag.innerHTML = `<img src="https://flagcdn.com/w160/${countryCode}.png" srcset="https://flagcdn.com/w320/${countryCode}.png 2x" width="80" alt="${countryName}">`;
         // Get user's IP address and pass it to updateWeatherInfo
         getUserIP((userIP) => {
           updateWeatherInfo(data, userIP, countryCode);
@@ -82,14 +82,72 @@ function updateWeatherInfo(data, userIP, countryCode) {
   const dataInfoDayOrNight = document.getElementById(
     "weather-info-day-or-night"
   );
-  dataInfoCountry.innerHTML = `${data.location.country}`;
-  dataInfoTown.innerHTML = `${data.location.name}`;
-  dataInfoTemperature.innerHTML = `${data.current.temp_c}°C`;
-  dataInfoWind.innerHTML = `${data.current.wind_kph} km/h`;
-  dataInfoCloud.innerHTML = `${data.current.cloud ? "Dégagé" : "Nuageux"}`;
-  dataInfoCondition.innerHTML = `${data.current.condition.text}`;
-  dataInfoPrecipitation.innerHTML = `${data.current.precip_mm} mm`;
-  dataInfoDayOrNight.innerHTML = `${data.current.is_day ? "Jour" : "Nuit"}`;
+  //le temps local
+  const dataInfoLocalTime = document.getElementById("weather-info-local-time");
+  const localTime = new Date(data.location.localtime);
+  const hours = localTime.getHours();
+  const minutes = localTime.getMinutes();
+
+  const formattedTime = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+
+  if (dataInfoLocalTime) {
+    dataInfoLocalTime.innerHTML = `${formattedTime}`;
+  } else {
+    console.error("Element dataInfoLocalTime not found in the DOM.");
+  }
+
+  if (dataInfoCountry) {
+    dataInfoCountry.innerHTML = `${data.location.country}`;
+  } else {
+    console.error("Element dataInfoCountry not found in the DOM.");
+  }
+
+  if (dataInfoTown) {
+    dataInfoTown.innerHTML = `${data.location.name}`;
+  } else {
+    console.error("Element dataInfoTown not found in the DOM.");
+  }
+
+  if (dataInfoTemperature) {
+    dataInfoTemperature.innerHTML = `${data.current.temp_c}°C`;
+  } else {
+    console.error("Element dataInfoTemperature not found in the DOM.");
+  }
+
+  if (dataInfoWind) {
+    dataInfoWind.innerHTML = `${data.current.wind_kph} km/h`;
+  } else {
+    console.error("Element dataInfoWind not found in the DOM.");
+  }
+
+  if (dataInfoCloud) {
+    const cloudPercentage = data.current.cloud;
+    const isCloudy = cloudPercentage > 50;
+    const cloudImage = isCloudy ? '<img src="../../assets/cloudy_sky.png" alt="Nuageux" width="50px" height="50px">' : '<img src="../../assets/clear_sky.png" alt="Ciel clair" width="50px" height="50px">';
+    dataInfoCloud.innerHTML = cloudImage;
+} else {
+    console.error("Element dataInfoCloud not found in the DOM.");
+}
+
+  if (dataInfoCondition) {
+    console.log(data.current.condition.text);
+    dataInfoCondition.innerHTML = `${data.current.condition.text}`;
+  } else {
+    console.error("Element dataInfoCondition not found in the DOM.");
+  }
+
+  if (dataInfoPrecipitation) {
+    dataInfoPrecipitation.innerHTML = `${data.current.precip_mm} mm`;
+  } else {
+    console.error("Element dataInfoPrecipitation not found in the DOM.");
+  }
+
+  if (dataInfoDayOrNight) {
+    const isDay = data.current.is_day;
+    dataInfoDayOrNight.innerHTML = isDay ? '<img src="../../assets/soleil.png" alt="Soleil" width="30px" height="30px">' : '<img src="../../assets/lune.png" alt="Lune" width="30px" height="30px">';
+} else {
+    console.error("Element dataInfoDayOrNight not found in the DOM.");
+}
 
   // Combiner les données de localisation et de météo dans un seul objet
   const postData = {
@@ -104,6 +162,7 @@ function updateWeatherInfo(data, userIP, countryCode) {
       conditionText: data.current.condition.text,
       precipitation: data.current.precip_mm,
       dayOrNight: data.current.is_day ? "Jour" : "Nuit",
+      localtime: formattedTime,
     },
   };
   console.log(postData);

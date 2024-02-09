@@ -38,6 +38,12 @@ function callWeatherAPI(city, userIP, locationData) {
   )
     .then((response) => response.json())
     .then((weatherData) => {
+      const weatherInfoLocalTime = document.getElementById("weather-info-local-time");
+      const localTime = new Date(weatherData.location.localtime);
+      const hours = localTime.getHours();
+      const minutes = localTime.getMinutes();
+      const formattedTime = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+
       const weatherInfo = document.getElementById("weather-info");
       const weatherInfoTown = document.getElementById("weather-info-town");
       const weatherInfoCountry = document.getElementById("weather-info-country");
@@ -62,8 +68,9 @@ function callWeatherAPI(city, userIP, locationData) {
       }
 
       if (weatherInfoCloud) {
-        const isClearSky = weatherData.current.cloud === 0;
-        weatherInfoCloud.innerHTML = isClearSky ? '<img src="../../assets/cloudy_sky.png" alt="Nuageux" width="50px" height="50px">' : '<img src="../../assets/clear_sky.png" alt="Ciel clair" width="50px" height="50px">';
+        const cloudCoverPercentage = weatherData.current.cloud;
+        const isCloudy = cloudCoverPercentage >= 50; // Condition de nuageux
+        weatherInfoCloud.innerHTML = isCloudy ? '<img src="../../assets/cloudy_sky.png" alt="Nuageux" width="50px" height="50px">' : '<img src="../../assets/clear_sky.png" alt="Ciel clair" width="50px" height="50px">';
       } else {
         console.error("Element weather-info-cloud not found in the DOM.");
       }
@@ -94,6 +101,12 @@ function callWeatherAPI(city, userIP, locationData) {
         console.error("Element weather-info-condition not found in the DOM.");
       }
 
+      if (weatherInfoLocalTime) {
+        weatherInfoLocalTime.innerHTML = `${formattedTime}`;
+      } else {
+        console.error("Element weather-info-localtime not found in the DOM.");
+      }
+
       if (weatherInfoPrecipitation) {
         weatherInfoPrecipitation.innerHTML = `${weatherData.current.precip_mm} mm`;
       } else {
@@ -113,6 +126,7 @@ function callWeatherAPI(city, userIP, locationData) {
           conditionText: weatherData.current.condition.text,
           precipitation: weatherData.current.precip_mm,
           dayOrNight: weatherData.current.is_day ? "Jour" : "Nuit",
+          localtime: formattedTime,
         },
       };
 
@@ -137,6 +151,5 @@ function callWeatherAPI(city, userIP, locationData) {
       console.error("Une erreur s'est produite lors de l'appel de l'API météo : ", error);
     });
 }
-
 
 getUserIP(callAPIWithUserIP);
