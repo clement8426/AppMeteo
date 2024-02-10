@@ -1,4 +1,3 @@
-// Récupérer l'adresse IP de l'utilisateur en utilisant un service tiers
 function getUserIP(callback) {
   fetch("https://api64.ipify.org?format=json")
     .then((response) => response.json())
@@ -26,6 +25,8 @@ function callAPIWithUserIP(userIP) {
       >`;
       // Call the weather API with the retrieved city
       callWeatherAPI(data.city, userIP, data);
+      // Call the currency API with the retrieved country name
+      getCurrencyInfo(userIP, data);
     })
     .catch((error) => {
       console.error("An error occurred while calling the API:", error);
@@ -53,6 +54,10 @@ function callWeatherAPI(city, userIP, locationData) {
       const weatherInfoPrecipitation = document.getElementById("weather-info-precipitation");
       const weatherInfoDayOrNight = document.getElementById("weather-info-day-or-night");
       const weatherInfoCloud = document.getElementById("weather-info-cloud");
+
+      recordSearch(city);
+      displaySearchCount(city);
+
 
       if (weatherInfoWind) {
         weatherInfoWind.innerHTML = `${weatherData.current.wind_kph} km/h`;
@@ -151,5 +156,63 @@ function callWeatherAPI(city, userIP, locationData) {
       console.error("Une erreur s'est produite lors de l'appel de l'API météo : ", error);
     });
 }
+
+function getCurrencyInfo(userIP, locationData) {
+  fetch(`https://restcountries.com/v3.1/name/${locationData.country_name}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Unable to fetch currency data");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      const currencies = data[0]?.currencies;
+      const currencyInfo = {
+        code: Object.keys(currencies)[0],
+        name: currencies[Object.keys(currencies)[0]].name,
+        symbol: currencies[Object.keys(currencies)[0]].symbol,
+      };
+      updateCurrencyInfo(currencyInfo);
+    })
+    .catch((error) => {
+      console.error("Error fetching currency data:", error);
+    });
+}
+
+function updateCurrencyInfo(currencyInfo) {
+  const currencyInfoElement = document.getElementById("currency-info");
+  if (currencyInfoElement) {
+    currencyInfoElement.innerHTML = `Currency: ${currencyInfo.name} (${currencyInfo.symbol})`;
+  } else {
+    console.error("Element currency-info not found in the DOM.");
+  }
+}
+
+function recordSearch(city) {
+  city = city.toLowerCase(); // Convertit la ville en minuscules
+  let searches = JSON.parse(localStorage.getItem("searches")) || {};
+  searches[city] = (searches[city] || 0) + 1;
+  localStorage.setItem("searches", JSON.stringify(searches));
+}
+
+// Fonction pour afficher le nombre de recherches pour une ville donnée
+function displaySearchCount() {
+  let searches = JSON.parse(localStorage.getItem("searches")) || {};
+  const searchCountElement = document.getElementById("search-count");
+
+  // Effacer le contenu précédent
+  searchCountElement.innerHTML = "";
+
+  // Afficher le nombre de recherches pour chaque ville
+  for (let city in searches) {
+    const searchCount = searches[city];
+    // Capitaliser la première lettre de la ville
+    const capitalizedCity = city.charAt(0).toUpperCase() + city.slice(1);
+    const listItem = document.createElement("p");
+    listItem.textContent = `Nombre de recherches pour ${capitalizedCity}: ${searchCount}`;
+    searchCountElement.appendChild(listItem);
+  }
+}
+
 
 getUserIP(callAPIWithUserIP);
