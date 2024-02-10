@@ -30,20 +30,87 @@ function fetchWeatherData(searchTerm) {
   )
     .then((response) => response.json())
     .then((data) => {
-      // Extract the country name from the weather data
       const countryName = data.location.country;
-      // Call the function to get country code and update flag image
-      getCountryCode(countryName).then((countryCode) => {
-        const flag = document.getElementById("flag");
-        flag.innerHTML = `<img src="https://flagcdn.com/w160/${countryCode}.png" srcset="https://flagcdn.com/w320/${countryCode}.png 2x" width="80" alt="${countryName}">`;
-        // Get user's IP address and pass it to updateWeatherInfo
-        getUserIP((userIP) => {
-          updateWeatherInfo(data, userIP, countryCode);
+      getCountryCode(countryName)
+        .then((countryCode) => {
+          const flag = document.getElementById("flag");
+          flag.innerHTML = `<img src="https://flagcdn.com/w160/${countryCode}.png" srcset="https://flagcdn.com/w320/${countryCode}.png 2x" width="80" alt="${countryName}">`;
+          getUserIP((userIP) => {
+            getCurrency(countryName)
+              .then((currencyData) => {
+                updateWeatherInfo(data, userIP, countryCode, currencyData);
+                recordSearch(searchTerm);
+                displaySearchCount(searchTerm.toLowerCase()); // Afficher le nombre de recherches pour la ville spécifique
+              })
+              .catch((error) => {
+                console.error("Error fetching currency data:", error);
+              });
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching country code:", error);
         });
-      });
     })
     .catch((error) => {
       console.error("Error fetching weather data:", error);
+    });
+}
+
+function recordSearch(city) {
+  let searches = JSON.parse(localStorage.getItem("searches")) || {};
+  let userIP = localStorage.getItem("userIP");
+
+  if (!searches[city]) {
+    searches[city] = 1;
+    localStorage.setItem("searches", JSON.stringify(searches));
+  } else {
+    if (userIP) {
+      let previousSearches = JSON.parse(userIP);
+      if (!previousSearches.includes(city)) {
+        previousSearches.push(city);
+        localStorage.setItem("userIP", JSON.stringify(previousSearches));
+        searches[city]++;
+        localStorage.setItem("searches", JSON.stringify(searches));
+      }
+    }
+  }
+}
+
+// Fonction pour afficher le nombre de recherches pour chaque ville
+function displaySearchCount(city) {
+  let searches = JSON.parse(localStorage.getItem("searches")) || {};
+  const searchCountElement = document.getElementById("search-count");
+
+  // Effacer le contenu précédent
+  searchCountElement.innerHTML = "";
+
+  // Récupérer le nombre de recherches pour la ville spécifique
+  const searchCount = searches[city] || 0;
+
+  // Afficher le nombre de recherches pour la ville spécifique
+  const listItem = document.createElement("p");
+  listItem.textContent = `Searches for ${city.charAt(0).toUpperCase() + city.slice(1)}: ${searchCount}`;
+  searchCountElement.appendChild(listItem);
+}
+
+
+function getCurrency(countryName) {
+  const apiUrl = `https://restcountries.com/v3.1/name/${countryName}`;
+
+  return fetch(apiUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Unable to fetch country data");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      const currencies = data[0]?.currencies;
+      return currencies;
+    })
+    .catch((error) => {
+      console.error("Error fetching currency data:", error);
+      return null;
     });
 }
 
@@ -67,7 +134,8 @@ function getCountryCode(countryName) {
     });
 }
 
-function updateWeatherInfo(data, userIP, countryCode) {
+
+function updateWeatherInfo(data, userIP, countryCode, currencyData) {
   const dataInfoTown = document.getElementById("weather-info-town");
   const dataInfoCountry = document.getElementById("weather-info-country");
   const dataInfoTemperature = document.getElementById(
@@ -89,6 +157,16 @@ function updateWeatherInfo(data, userIP, countryCode) {
   const minutes = localTime.getMinutes();
 
   const formattedTime = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+
+  const currencyInfo = document.getElementById("currency-info");
+  if (currencyInfo && currencyData) {
+    const currencyCode = Object.keys(currencyData)[0];
+    const currencyName = currencyData[currencyCode].name;
+    const currencySymbol = currencyData[currencyCode].symbol;
+    currencyInfo.innerHTML = `Currency: ${currencyName} (${currencySymbol})`;
+  } else {
+    console.error("Element currencyInfo not found in the DOM or currency data not available.");
+  }
 
   if (dataInfoLocalTime) {
     dataInfoLocalTime.innerHTML = `${formattedTime}`;
