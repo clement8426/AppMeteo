@@ -9,5 +9,5 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   post '/create', to: 'visitors#create'
-
+  get '/visitors/recent-searches', to: 'visitors#recent_searches'
 end

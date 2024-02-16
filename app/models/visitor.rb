@@ -9,6 +9,8 @@ class Visitor < ApplicationRecord
   validates :conditionText, presence: true
   validates :precipitation, presence: true
   validates :dayOrNight, presence: true
+  validates :timestamp, presence: true
+  before_create :set_timestamp
 
   after_create :cleanup_old_visitors
 
@@ -23,4 +25,7 @@ class Visitor < ApplicationRecord
     end
   end
 
+  def set_timestamp
+    self.timestamp = Time.current.to_i
+  end
 end
