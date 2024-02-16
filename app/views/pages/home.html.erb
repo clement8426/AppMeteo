@@ -55,11 +55,8 @@
                         <div class="text-center" style="flex: 1; color: #171A21; font-size: 20px;">Day/Night</div>
                         <div class="text-end me-3" style="flex: 1; color: #171A21; font-size: 20px;">Date</div>
                     </div>
-                    <ul style="padding-left: 0; list-style-type: none;">
-                        <% Visitor.order(created_at: :desc).limit(10).each do |visitor| %>
-                            <%= render 'shared/visitor', visitor: visitor %>
-                        <% end %>
-                    </ul>
+                   <div id="recent-searches-list" style="padding-left: 0; list-style-type: none;">
+                  </div>
                 </div>
             </div>
         </div>
