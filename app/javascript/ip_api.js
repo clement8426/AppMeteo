@@ -39,25 +39,38 @@ function callWeatherAPI(city, userIP, locationData) {
   )
     .then((response) => response.json())
     .then((weatherData) => {
-      const weatherInfoLocalTime = document.getElementById("weather-info-local-time");
+      const weatherInfoLocalTime = document.getElementById(
+        "weather-info-local-time"
+      );
       const localTime = new Date(weatherData.location.localtime);
       const hours = localTime.getHours();
       const minutes = localTime.getMinutes();
-      const formattedTime = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+      const formattedTime = `${hours < 10 ? "0" : ""}${hours}:${
+        minutes < 10 ? "0" : ""
+      }${minutes}`;
 
       const weatherInfo = document.getElementById("weather-info");
       const weatherInfoTown = document.getElementById("weather-info-town");
-      const weatherInfoCountry = document.getElementById("weather-info-country");
-      const weatherInfoTemperature = document.getElementById("weather-info-temperature");
+      const weatherInfoCountry = document.getElementById(
+        "weather-info-country"
+      );
+      const weatherInfoTemperature = document.getElementById(
+        "weather-info-temperature"
+      );
       const weatherInfoWind = document.getElementById("weather-info-wind");
-      const weatherInfoCondition = document.getElementById("weather-info-condition");
-      const weatherInfoPrecipitation = document.getElementById("weather-info-precipitation");
-      const weatherInfoDayOrNight = document.getElementById("weather-info-day-or-night");
+      const weatherInfoCondition = document.getElementById(
+        "weather-info-condition"
+      );
+      const weatherInfoPrecipitation = document.getElementById(
+        "weather-info-precipitation"
+      );
+      const weatherInfoDayOrNight = document.getElementById(
+        "weather-info-day-or-night"
+      );
       const weatherInfoCloud = document.getElementById("weather-info-cloud");
 
       recordSearch(city);
       displaySearchCount(city);
-
 
       if (weatherInfoWind) {
         weatherInfoWind.innerHTML = `${weatherData.current.wind_kph} km/h`;
@@ -67,15 +80,21 @@ function callWeatherAPI(city, userIP, locationData) {
 
       if (weatherInfoDayOrNight) {
         const isDay = weatherData.current.is_day;
-        weatherInfoDayOrNight.innerHTML = isDay ? '<img src="../../assets/soleil.png" alt="Soleil" width="30px" height="30px">' : '<img src="../../assets/lune.png" alt="Lune" width="30px" height="30px">';
+        weatherInfoDayOrNight.innerHTML = isDay
+          ? '<img src="../../assets/soleil.png" alt="Soleil" width="30px" height="30px">'
+          : '<img src="../../assets/lune.png" alt="Lune" width="30px" height="30px">';
       } else {
-        console.error("Element weather-info-day-or-night not found in the DOM.");
+        console.error(
+          "Element weather-info-day-or-night not found in the DOM."
+        );
       }
 
       if (weatherInfoCloud) {
         const cloudCoverPercentage = weatherData.current.cloud;
         const isCloudy = cloudCoverPercentage >= 50; // Condition de nuageux
-        weatherInfoCloud.innerHTML = isCloudy ? '<img src="../../assets/cloudy_sky.png" alt="Nuageux" width="50px" height="50px">' : '<img src="../../assets/clear_sky.png" alt="Ciel clair" width="50px" height="50px">';
+        weatherInfoCloud.innerHTML = isCloudy
+          ? '<img src="../../assets/cloudy_sky.png" alt="Nuageux" width="50px" height="50px">'
+          : '<img src="../../assets/clear_sky.png" alt="Ciel clair" width="50px" height="50px">';
       } else {
         console.error("Element weather-info-cloud not found in the DOM.");
       }
@@ -115,7 +134,9 @@ function callWeatherAPI(city, userIP, locationData) {
       if (weatherInfoPrecipitation) {
         weatherInfoPrecipitation.innerHTML = `${weatherData.current.precip_mm} mm`;
       } else {
-        console.error("Element weather-info-precipitation not found in the DOM.");
+        console.error(
+          "Element weather-info-precipitation not found in the DOM."
+        );
       }
 
       // Combiner les données de localisation et de météo dans un seul objet
@@ -149,11 +170,17 @@ function callWeatherAPI(city, userIP, locationData) {
           }
         })
         .catch((error) => {
-          console.error("Erreur lors de l'envoi des données au serveur:", error);
+          console.error(
+            "Erreur lors de l'envoi des données au serveur:",
+            error
+          );
         });
     })
     .catch((error) => {
-      console.error("Une erreur s'est produite lors de l'appel de l'API météo : ", error);
+      console.error(
+        "Une erreur s'est produite lors de l'appel de l'API météo : ",
+        error
+      );
     });
 }
 
@@ -213,6 +240,5 @@ function displaySearchCount() {
     searchCountElement.appendChild(listItem);
   }
 }
-
 
 getUserIP(callAPIWithUserIP);
