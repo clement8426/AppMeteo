@@ -216,8 +216,8 @@ function updateWeatherInfo(data, userIP, countryCode, currencyData) {
     const cloudPercentage = data.current.cloud;
     const isCloudy = cloudPercentage > 50;
     const cloudImage = isCloudy
-      ? '<img src="../../assets/cloudy_sky.png" alt="Nuageux" width="50px" height="50px">'
-      : '<img src="../../assets/clear_sky.png" alt="Ciel clair" width="50px" height="50px">';
+      ? '<img src="https://res.cloudinary.com/dlcltznns/image/upload/v1708362021/qata0shzyb4uikhnnclt.png" alt="Cloudy sky" width="50px" height="50px">'
+      : '<img src="https://res.cloudinary.com/dlcltznns/image/upload/v1708362026/vj08co2edbwpqxdahgbh.png" alt="Clear sky" width="50px" height="50px">';
     dataInfoCloud.innerHTML = cloudImage;
   } else {
     console.error("Element dataInfoCloud not found in the DOM.");
@@ -238,8 +238,8 @@ function updateWeatherInfo(data, userIP, countryCode, currencyData) {
   if (dataInfoDayOrNight) {
     const isDay = data.current.is_day;
     dataInfoDayOrNight.innerHTML = isDay
-      ? '<img src="../../assets/soleil.png" alt="Soleil" width="30px" height="30px">'
-      : '<img src="../../assets/lune.png" alt="Lune" width="30px" height="30px">';
+      ? '<img src="https://res.cloudinary.com/dlcltznns/image/upload/v1708362034/pbnjcluffqy5hioxtft5.png" alt="Sun" width="30px" height="30px">'
+      : '<img src="https://res.cloudinary.com/dlcltznns/image/upload/v1708362031/smnymgttfaehzeow9kkh.png" alt="Moon" width="30px" height="30px">';
   } else {
     console.error("Element dataInfoDayOrNight not found in the DOM.");
   }
