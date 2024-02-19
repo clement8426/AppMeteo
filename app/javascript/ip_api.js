@@ -23,9 +23,9 @@ function callAPIWithUserIP(userIP) {
       width="80"
       alt="${data.country_name}"
       >`;
-      // Call the weather API with the retrieved city
+      // Appeler l'API météo avec la ville récupérée
       callWeatherAPI(data.city, userIP, data);
-      // Call the currency API with the retrieved country name
+      // Appeler l'API de devises avec le nom du pays récupéré
       getCurrencyInfo(userIP, data);
     })
     .catch((error) => {
