@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       var searchTerm = document.getElementById("search-input").value.trim();
 
+      document.getElementById("search-input").value = "";
+
       fetchWeatherData(searchTerm);
     });
 });
