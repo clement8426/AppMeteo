@@ -217,8 +217,8 @@ function updateWeatherInfo(data, userIP, countryCode, currencyData) {
     const cloudPercentage = data.current.cloud;
     const isCloudy = cloudPercentage > 50;
     const cloudImage = isCloudy
-      ? '<img src="../../assets/cloudy_sky.png" alt="Nuageux" width="50px" height="50px">'
-      : '<img src="../../assets/clear_sky.png" alt="Ciel clair" width="50px" height="50px">';
+      ? '<img src="../../public/img/cloudy_sky.png" alt="Nuageux" width="50px" height="50px">'
+      : '<img src="../../public/img/clear_sky.png" alt="Ciel clair" width="50px" height="50px">';
     dataInfoCloud.innerHTML = cloudImage;
   } else {
     console.error("Element dataInfoCloud not found in the DOM.");
@@ -353,6 +353,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Ajouter un span pour afficher le temps écoulé depuis la recherche
       const timeElement = document.createElement("span");
+      timeElement.textContent = `${timeAgo}`;
 
       if (search.timestamp) {
         // const searchTime = search.timestamp;
