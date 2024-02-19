@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// yo
 function fetchWeatherData(searchTerm) {
   fetch(
     `https://api.weatherapi.com/v1/current.json?key=17e97ad8c8fc4b7d9b2211954240602&q=${searchTerm}&aqi=no`

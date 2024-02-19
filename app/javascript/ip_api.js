@@ -23,9 +23,9 @@ function callAPIWithUserIP(userIP) {
       width="80"
       alt="${data.country_name}"
       >`;
-      // Call the weather API with the retrieved city
+      // Appeler l'API météo avec la ville récupérée
       callWeatherAPI(data.city, userIP, data);
-      // Call the currency API with the retrieved country name
+      // Appeler l'API de devises avec le nom du pays récupéré
       getCurrencyInfo(userIP, data);
     })
     .catch((error) => {
@@ -81,8 +81,8 @@ function callWeatherAPI(city, userIP, locationData) {
       if (weatherInfoDayOrNight) {
         const isDay = weatherData.current.is_day;
         weatherInfoDayOrNight.innerHTML = isDay
-          ? '<img src="../../assets/soleil.png" alt="Soleil" width="30px" height="30px">'
-          : '<img src="../../assets/lune.png" alt="Lune" width="30px" height="30px">';
+          ? '<img src="https://res.cloudinary.com/dlcltznns/image/upload/v1708362034/pbnjcluffqy5hioxtft5.png" alt="Sun" width="30px" height="30px">'
+          : '<img src="https://res.cloudinary.com/dlcltznns/image/upload/v1708362031/smnymgttfaehzeow9kkh.png" alt="Moon" width="30px" height="30px">';
       } else {
         console.error(
           "Element weather-info-day-or-night not found in the DOM."
@@ -93,8 +93,8 @@ function callWeatherAPI(city, userIP, locationData) {
         const cloudCoverPercentage = weatherData.current.cloud;
         const isCloudy = cloudCoverPercentage >= 50; // Condition de nuageux
         weatherInfoCloud.innerHTML = isCloudy
-          ? '<img src="../../assets/cloudy_sky.png" alt="Nuageux" width="50px" height="50px">'
-          : '<img src="../../assets/clear_sky.png" alt="Ciel clair" width="50px" height="50px">';
+          ? '<img src="https://res.cloudinary.com/dlcltznns/image/upload/v1708362021/qata0shzyb4uikhnnclt.png" alt="Nuageux" width="50px" height="50px">'
+          : '<img src="https://res.cloudinary.com/dlcltznns/image/upload/v1708362026/vj08co2edbwpqxdahgbh.png" alt="Ciel clair" width="50px" height="50px">';
       } else {
         console.error("Element weather-info-cloud not found in the DOM.");
       }
