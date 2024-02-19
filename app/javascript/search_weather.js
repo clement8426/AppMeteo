@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       var searchTerm = document.getElementById("search-input").value.trim();
 
+      document.getElementById("search-input").value = "";
+
       fetchWeatherData(searchTerm);
     });
 });
@@ -216,8 +218,10 @@ function updateWeatherInfo(data, userIP, countryCode, currencyData) {
     const cloudPercentage = data.current.cloud;
     const isCloudy = cloudPercentage > 50;
     const cloudImage = isCloudy
+
       ? '<img src="https://res.cloudinary.com/dlcltznns/image/upload/v1708362021/qata0shzyb4uikhnnclt.png" alt="Cloudy sky" width="50px" height="50px">'
       : '<img src="https://res.cloudinary.com/dlcltznns/image/upload/v1708362026/vj08co2edbwpqxdahgbh.png" alt="Clear sky" width="50px" height="50px">';
+
     dataInfoCloud.innerHTML = cloudImage;
   } else {
     console.error("Element dataInfoCloud not found in the DOM.");
@@ -352,6 +356,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Ajouter un span pour afficher le temps écoulé depuis la recherche
       const timeElement = document.createElement("span");
+      timeElement.textContent = `${timeAgo}`;
 
       if (search.timestamp) {
         // const searchTime = search.timestamp;
