@@ -93,8 +93,8 @@ function callWeatherAPI(city, userIP, locationData) {
         const cloudCoverPercentage = weatherData.current.cloud;
         const isCloudy = cloudCoverPercentage >= 50; // Condition de nuageux
         weatherInfoCloud.innerHTML = isCloudy
-          ? '<img src="https://res.cloudinary.com/dlcltznns/image/upload/v1708362021/qata0shzyb4uikhnnclt.png" alt="Nuageux" width="50px" height="50px">'
-          : '<img src="https://res.cloudinary.com/dlcltznns/image/upload/v1708362026/vj08co2edbwpqxdahgbh.png" alt="Ciel clair" width="50px" height="50px">';
+          ? '<img src="https://res.cloudinary.com/dlcltznns/image/upload/v1708362021/qata0shzyb4uikhnnclt.png" alt="Cloudy sky" width="50px" height="50px">'
+          : '<img src="https://res.cloudinary.com/dlcltznns/image/upload/v1708362026/vj08co2edbwpqxdahgbh.png" alt="Clear sky" width="50px" height="50px">';
       } else {
         console.error("Element weather-info-cloud not found in the DOM.");
       }
