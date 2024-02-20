@@ -306,68 +306,74 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function updateRecentSearches(data) {
-    // method get pour recupere heure de la creactions de la recherche
-    // ensuite comparer heure actuelle avec l'heure de la creation de la recherche
-
-    // log la valeur voir si elle est correcte
-
     const recentSearchesList = document.getElementById("recent-searches-list");
     recentSearchesList.innerHTML = ""; // Effacer le contenu précédent
 
-    // const current = new Date(); // Temps actuel en millisecondes
-    // const currentTime = current.getTime();
-
     data.forEach((search, index) => {
       const listItem = document.createElement("li");
+      listItem.classList.add(
+        "d-flex",
+        "justify-content-between",
+        "mb-3",
+        "align-items-center"
+      );
 
-      // const givenDate = new Date(search.created_at); // Given date in the format "YYYY-MM-DDTHH:mm:ss.sssZ"
-      // const now = new Date(); // Current date and time
-      // const diffMs = now - givenDate; // Difference in milliseconds
-      // const diffMin = diffMs / (1000 * 60); // Difference in minutes
+      // Colonne Location
+      const locationColumn = document.createElement("div");
+      locationColumn.classList.add("text-center", "flex-grow-1", "col-3");
 
-      // console.log(`The given date was ${diffMin.toFixed(2)} minutes ago.`);
+      // Ajouter l'image de drapeau
+      const flagImage = document.createElement("img");
+      flagImage.src = `https://flagcdn.com/w160/${search.countryCode.toLowerCase()}.png`;
+      flagImage.alt = `${search.country} Flag`;
+      flagImage.width = 40;
+      locationColumn.appendChild(flagImage);
 
-      const givenDate = new Date(search.created_at); // Given date in the format "YYYY-MM-DDTHH:mm:ss.sssZ"
-      const now = new Date(); // Current date and time
-      const diffMs = now - givenDate; // Difference in milliseconds
+      // Ajouter le pays et la ville
+      const locationText = document.createElement("div");
+      locationText.textContent = `${search.country}/${search.city}`;
+      locationColumn.appendChild(locationText);
 
-      // Convert the difference to minutes and round down to the nearest integer
+      listItem.appendChild(locationColumn);
+
+      // Colonne Time of Day
+      const timeOfDayColumn = document.createElement("div");
+      timeOfDayColumn.classList.add("text-center", "flex-grow-1", "col-3");
+      const timeOfDayImage = document.createElement("img");
+      timeOfDayImage.src =
+        search.dayOrNight === "Jour"
+          ? "https://res.cloudinary.com/dlcltznns/image/upload/v1708362034/pbnjcluffqy5hioxtft5.png"
+          : "https://res.cloudinary.com/dlcltznns/image/upload/v1708362031/smnymgttfaehzeow9kkh.png";
+      timeOfDayImage.alt = search.dayOrNight === "Jour" ? "Sun" : "Moon";
+      timeOfDayImage.width = 30;
+      timeOfDayImage.height = 30;
+      timeOfDayColumn.appendChild(timeOfDayImage);
+      listItem.appendChild(timeOfDayColumn);
+
+      // Colonne Date
+      const dateColumn = document.createElement("div");
+      dateColumn.classList.add("text-center", "flex-grow-1", "col-3");
+
+      // Calculer le temps écoulé
+      const givenDate = new Date(search.created_at);
+      const now = new Date();
+      const diffMs = now - givenDate;
       const diffMin = Math.floor(Math.abs(diffMs / (1000 * 60)));
-
-      // Display the difference in minutes if it's 1 minute or more, and in seconds if it's less than 1 minute
       let timeAgo;
       if (diffMin >= 1) {
         timeAgo = `${diffMin} min`;
       } else {
         timeAgo = `${(diffMs / 1000).toFixed(0)} sec`;
       }
-      // console.log(search);
-      // Créer une balise img pour afficher le drapeau du pays
-      const flagImage = document.createElement("img");
-      flagImage.src = `https://flagcdn.com/w160/${search.countryCode.toLowerCase()}.png`;
-      flagImage.alt = `${search.country} Flag`;
-      flagImage.width = 40;
-      listItem.appendChild(flagImage);
 
-      // Ajouter les détails de la recherche
-      const searchDetails = document.createElement("span");
-      searchDetails.textContent = `${search.country}/${search.city},  ${search.temperature}°C, ${timeAgo} `;
+      dateColumn.textContent = timeAgo;
+      listItem.appendChild(dateColumn);
 
-      // Ajouter un span pour afficher le temps écoulé depuis la recherche
-      const timeElement = document.createElement("span");
-
-      if (search.timestamp) {
-        // const searchTime = search.timestamp;
-        // const timeDiff = currentTime - searchTime;
-        // console.log(timeDiff);
-        // const minutesDiff = Math.floor(timeDiff / (1000 * 60)); // Convertir la différence en minutes
-        // timeElement.textContent = ` - ${minutesDiff} minutes ago`;
-      } else {
-        timeElement.textContent = " - Timestamp not available";
-      }
-
-      searchDetails.appendChild(timeElement);
-      listItem.appendChild(searchDetails);
+      // Colonne Temperature
+      const temperatureColumn = document.createElement("div");
+      temperatureColumn.classList.add("text-center", "flex-grow-1", "col-3");
+      temperatureColumn.textContent = `${search.temperature}°C`;
+      listItem.appendChild(temperatureColumn);
 
       recentSearchesList.appendChild(listItem);
     });
